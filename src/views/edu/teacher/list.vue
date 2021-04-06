@@ -43,6 +43,10 @@
       <el-form-item>
         <el-button type="primary" @click="getList()">查询</el-button>
       </el-form-item>
+
+      <el-form-item>
+        <el-button @click="clear()">清空</el-button>
+      </el-form-item>
     </el-form>
 
     <!-- 数据表单 -->
@@ -61,13 +65,22 @@
         </template>
       </el-table-column>
 
-      <el-table-column prop="gmtCreate" label="创建时间" width="80"/>
+      <el-table-column prop="gmtCreate" label="创建时间"/>
 
-      <el-table-column prop="gmtModified" label="修改时间" width="80"/>
+      <el-table-column prop="gmtModified" label="修改时间"/>
 
       <el-table-column prop="sort" label="排序" width="60"/>
 
       <el-table-column prop="intro" label="资历"></el-table-column>
+
+      <el-table-column label="操作" align="center">
+        <template slot-scope="scope">
+          <router-link :to="'/eduservice/teacher/' + scope.row.id">
+            <el-button type="primary" icon="el-icon-edit">修改</el-button>
+          </router-link>
+          <el-button type="danger" icon="el-icon-delete" @click="deleteTeacherById(scope.row.id)">删除</el-button>
+        </template>
+      </el-table-column>
     </el-table>
 
     <el-pagination
@@ -85,7 +98,6 @@
 
 <script>
 import teacher from '@/api/teacher/teacher.js'
-import qs from 'qs'
 
 export default {
   data() {
@@ -115,8 +127,34 @@ export default {
         .catch((err) => {
           console.log(err)
           console.log(this.teacherQuery)
-          console.log(qs.stringify(this.teacherQuery))
         })
+    },
+    // 清空查询条件
+    clear() {
+      this.teacherQuery = {}
+      this.getList()
+    },
+    // 删除
+    deleteTeacherById(id) {
+      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        teacher.deleteTeacherById(id)
+          .then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+            this.getList(this.page)
+          })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     }
   }
 }
