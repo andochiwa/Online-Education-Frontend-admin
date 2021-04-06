@@ -51,13 +51,13 @@
 
     <!-- 数据表单 -->
     <el-table :data="list" border style="width: 100%">
-      <el-table-column label="序号" width="70">
+      <el-table-column label="序号">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
 
-      <el-table-column prop="name" label="姓名" width="80"/>
+      <el-table-column prop="name" label="姓名"/>
 
       <el-table-column label="头衔" width="80">
         <template slot-scope="scope">
@@ -69,13 +69,13 @@
 
       <el-table-column prop="gmtModified" label="修改时间"/>
 
-      <el-table-column prop="sort" label="排序" width="60"/>
+      <el-table-column prop="sort" label="排序"/>
 
       <el-table-column prop="intro" label="资历"></el-table-column>
 
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
-          <router-link :to="'/eduservice/teacher/' + scope.row.id">
+          <router-link :to="'/teacher/edit/' + scope.row.id">
             <el-button type="primary" icon="el-icon-edit" size="small">修改</el-button>
           </router-link>
           <el-button type="danger" icon="el-icon-delete" size="small" @click="deleteTeacherById(scope.row.id)">删除</el-button>
