@@ -7,7 +7,6 @@ export default {
         return request({
             url: `/eduservice/teacher/pageTeacherCondition/${current}/${limit}`,
             method: 'post',
-            // teacherQuery条件对象，把对象转换成json
             data: teacherQuery
         })
     }
