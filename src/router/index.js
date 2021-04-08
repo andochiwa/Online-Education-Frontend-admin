@@ -30,9 +30,9 @@ export const constantRoutes = [
     redirect: '/dashboard',
     children: [{
       path: 'dashboard',
-      name: 'Dashboard',
+      name: '面板',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: '面板', icon: 'dashboard' }
     }]
   },
 
@@ -47,13 +47,13 @@ export const constantRoutes = [
         path: 'table',
         name: '教师列表',
         component: () => import('@/views/edu/teacher/list'),
-        meta: { title: '教师列表', icon: 'table' }
+        meta: { title: '教师列表', icon: 'nested' }
       },
       {
         path: 'save',
         name: '添加教师',
         component: () => import('@/views/edu/teacher/save'),
-        meta: { title: '添加教师', icon: 'tree' }
+        meta: { title: '添加教师', icon: 'form' }
       },
       {
         path: 'edit/:id',
@@ -61,6 +61,28 @@ export const constantRoutes = [
         component: () => import('@/views/edu/teacher/save'),
         meta: { title: '编辑教师', noCache: true},
         hidden: true
+      }
+    ]
+  },
+
+  {
+    path: '/subject',
+    component: Layout,
+    name: '课程分类管理',
+    redirect: '/subject/table',
+    meta: { title: '课程分类管理', icon: 'nested'},
+    children: [
+      {
+        path: 'list',
+        name: '课程分类列表',
+        component: () => import('@/views/edu/subject/list'),
+        meta: { title: '课程分类列表', icon: 'nested'}
+      },
+      {
+        path: 'save',
+        name: '添加课程',
+        component: () => import('@/views/edu/subject/save'),
+        meta: { title: '添加课程', icon: 'form'}
       }
     ]
   },
