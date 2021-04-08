@@ -29,12 +29,14 @@
           class="avatar-uploader"
           :action="actionUrl"
           :show-file-list="false"
-          drag
           :on-success="handleAvatarSuccess"
-          :before-upload="beforeAvatarUpload">
-          <img v-if="teacherData.avatar" :src="teacherData.avatar" class="avatar">
+          :before-upload="beforeAvatarUpload"
+        >
+          <img v-if="imgUrl" :src="imgUrl" class="avatar" alt="">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+
         </el-upload>
+
 
       </el-form-item>
       <!--   上传头像结束   -->
@@ -58,7 +60,8 @@ export default {
         sort: 0,
         avatar: ''
       },
-      actionUrl: process.env.VUE_APP_BASE_API + '/edu-oss/file'
+      actionUrl: process.env.VUE_APP_BASE_API + '/edu-oss/file',
+      imgUrl: ''
     }
   },
   // 监听
@@ -127,24 +130,23 @@ export default {
         })
     },
     // 上传头像成功
-    handleAvatarSuccess(res) {
+    handleAvatarSuccess(res, file) {
+      this.imgUrl = URL.createObjectURL(file.raw)
       this.teacherData.avatar = res.data.url
-      alert(this.teacherData.avatar)
     },
     // 上传头像前判断
     beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
+      const isJPG = file.type === 'image/jpeg'
       const isPNG = file.type === 'image/png'
-      const isLt20M = file.size / 1024 / 1024 < 20;
+      const isLt20M = file.size / 1024 / 1024 < 20
 
       if (!isJPG && !isPNG) {
-        this.$message.error('上传头像图片只能是 JPG或PNG 格式!');
+        this.$message.error('上传头像图片只能是 JPG或PNG 格式!')
       }
       if (!isLt20M) {
-        this.$message.error('上传头像图片大小不能超过 20MB!');
+        this.$message.error('上传头像图片大小不能超过 20MB!')
       }
-      alert((isJPG || isPNG) && isLt20M)
-      return (isJPG || isPNG) && isLt20M;
+      return (isJPG || isPNG) && isLt20M
     }
   }
 }
