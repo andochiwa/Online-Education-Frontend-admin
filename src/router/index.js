@@ -76,7 +76,7 @@ export const constantRoutes = [
         path: 'list',
         name: '课程分类列表',
         component: () => import('@/views/edu/subject/list'),
-        meta: { title: '课程分类列表', icon: 'nested'}
+        meta: { title: '课程分类列表', icon: 'tree'}
       },
       {
         path: 'save',
