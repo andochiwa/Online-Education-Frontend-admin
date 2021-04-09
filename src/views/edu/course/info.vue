@@ -37,10 +37,9 @@
       </el-form-item>
 
       <el-form-item label="课程简介">
-        <el-input type="textarea" v-model="courseInfo.description" :autosize="{minRows: 2, maxRows: 10}" placeholder="请输入课程简介"/>
+        <tinymce :height="300" v-model="courseInfo.description"/>
       </el-form-item>
 
-      <!--  课程封面 TODO    -->
       <el-form-item label="课程封面">
         <el-upload
           :action="BASE_API + '/edu-oss/file'"
@@ -70,8 +69,10 @@
 <script>
 import course from '@/api/education/course'
 import subject from '@/api/education/subject'
+import tinymce from '@/components/Tinymce'
 
 export default {
+  components: {tinymce},
   data() {
     return {
       BASE_API: process.env.VUE_APP_BASE_API + "/",
@@ -82,8 +83,9 @@ export default {
         subjectId: '',
         price: '',
         description: '',
-        cover: process.env.BASE_URL + '1.jpg',
-        teacherId: ''
+        cover: process.env.BASE_URL + 'img/1.jpg',
+        teacherId: '',
+        subjectParentId: ''
       },
       teacherList: {},
       subjectList: [],
@@ -141,6 +143,7 @@ export default {
     },
     // 课程分类改变时，把id绑定给courseInfo.subjectId
     handleChange(data) {
+      this.courseInfo.subjectParentId = data[0]
       this.courseInfo.subjectId = data[1]
     },
     // 上传封面之前
