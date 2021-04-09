@@ -75,9 +75,10 @@ export default {
   components: {tinymce},
   data() {
     return {
-      BASE_API: process.env.VUE_APP_BASE_API + "/",
+      BASE_API: process.env.VUE_APP_BASE_API,
       disabledSaveButton: false,
       courseInfo: {
+        id: '',
         title: '',
         lessonNum: '',
         subjectId: '',
@@ -94,29 +95,43 @@ export default {
         children: 'children',
         label: 'title',
         expandTrigger: 'hover'
-      }
+      },
     }
   },
   created() {
+    // 初始化教师信息
     this.getTeacher()
+    // 初始化课程分类
     this.getSubject()
+    // 获取路由id值
+    if (this.$route.params && this.$route.params.id) {
+      this.courseInfo.id = this.$route.params.id
+      this.getCourseInfo(this.courseInfo.id)
+    }
   },
   methods: {
     // 跳转到下一部
     next() {
-      // 发送请求到后端
-      course.saveCourseInfo(this.courseInfo)
-        .then(result => {
-          this.$message({
-            type: 'success',
-            message: '成功'
+      // 当有id时发送update请求
+      if (this.$route.params && this.$route.params.id) {
+        course.updateCourseInfo(this.courseInfo)
+          .then(result => {
+            this.courseInfo = result.data.items
+            this.$router.push({
+              path: '/course/chapter/' + this.courseInfo.id
+            })
           })
-          this.$router.push({
-            path: '/course/chapter/' + result.data.id
+      } else {
+        // 当没有id时发送save请求
+        course.saveCourseInfo(this.courseInfo)
+          .then(result => {
+            this.$router.push({
+              path: '/course/chapter/' + result.data.id
+            })
           })
-        })
+      }
     },
-    // 查询所有讲师
+    // 查询所有教师
     getTeacher() {
       course.getAllTeacher()
         .then(result => {
@@ -128,6 +143,20 @@ export default {
       subject.getSubjectList()
         .then(result => {
           this.subjectList = this.getTreeData(result.data.items)
+        })
+    },
+    // 根据id查询课程信息
+    getCourseInfo(courseId) {
+      course.getCourseInfo(courseId)
+        .then(result => {
+          this.courseInfo = result.data.items
+        })
+    },
+    // 更新课程信息
+    updateCourseInfo(courseInfo) {
+      course.updateCourseInfo(courseInfo)
+        .then(result => {
+          this.courseInfo = result.data.items
         })
     },
     // 递归判断，把最后一层children空数组置为undefined

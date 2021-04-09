@@ -3,11 +3,13 @@
 
     <h2 style="text-align: center">发布新课程</h2>
 
-    <el-steps :active="2" process-status="wait" align-center finish-status="success">
+    <el-steps :active="2" process-status="wait" finish-status="success">
       <el-step title="填写课程基本信息"></el-step>
       <el-step title="创建课程大纲"></el-step>
       <el-step title="发布课程"></el-step>
     </el-steps>
+
+    <el-tree :data="chapterVideoList" :props="defaultProps"></el-tree>
 
     <el-form label-width="200px">
       <el-form-item>
@@ -20,25 +22,42 @@
 </template>
 
 <script>
+import chapter from '@/api/education/chapter'
+
 export default {
   data() {
     return {
-      disabledSaveButton: false
+      disabledSaveButton: false,
+      courseId: '',
+      chapterVideoList: [],
+      defaultProps: {
+        children: 'children',
+        label: 'title'
+      }
     }
   },
   created() {
+    this.courseId = this.$route.params.id
+    this.getChapterVideo(this.courseId)
   },
   methods: {
-    // 跳转到下一部
+    // 根据课程id查询章节和小节
+    getChapterVideo(courseId) {
+      chapter.getChapterVideo(courseId)
+        .then(result => {
+          this.chapterVideoList = result.data.items
+        })
+    },
+    // 跳转到下一步
     next() {
       this.$router.push({
-        path: '/course/publish/1'
+        path: '/course/publish/' + this.courseId
       })
     },
     // 返回上一步
     previous() {
       this.$router.push({
-        path: '/course/info/1'
+        path: '/course/info/' + this.courseId
       })
     }
   }

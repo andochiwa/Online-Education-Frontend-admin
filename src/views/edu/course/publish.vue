@@ -3,7 +3,7 @@
 
     <h2 style="text-align: center">发布新课程</h2>
 
-    <el-steps :active="3" process-status="wait" align-center finish-status="success">
+    <el-steps :active="3" process-status="wait" finish-status="success">
       <el-step title="填写课程基本信息"></el-step>
       <el-step title="创建课程大纲"></el-step>
       <el-step title="发布课程"></el-step>
