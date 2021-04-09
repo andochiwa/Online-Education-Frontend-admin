@@ -51,7 +51,7 @@
 
 <script>
 
-import teacher from '@/api/teacher/teacher'
+import teacher from '@/api/education/teacher'
 
 export default {
   data() {

@@ -10,6 +10,28 @@
     </el-steps>
 
     <el-form label-width="200px">
+      <el-form-item label="课程标题">
+        <el-input v-model="courseInfo.title" placeholder="请输入课程标题"/>
+      </el-form-item>
+
+      <!--  所属分类 TODO  -->
+
+      <!--  课程教师 TODO  -->
+
+      <el-form-item label="总课时">
+        <el-input-number :min="0" v-model="courseInfo.lessonNum"/>
+      </el-form-item>
+
+      <!--  课程简介 TODO  -->
+
+      <!--  课程封面 TODO    -->
+
+      <el-form-item label="课程价格">
+        <el-input-number :min="0" v-model="courseInfo.price" placeholder="请输入课程价格"/>
+      </el-form-item>
+    </el-form>
+
+    <el-form label-width="200px">
       <el-form-item>
         <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="next">下一步</el-button>
       </el-form-item>
@@ -22,7 +44,16 @@
 export default {
   data() {
     return {
-      disabledSaveButton: false
+      disabledSaveButton: false,
+      courseInfo: {
+        title: '',
+        lessonNum: '',
+        subjectId: '',
+        price: '',
+        description: '',
+        cover: '',
+        teacherId: ''
+      }
     }
   },
   created() {

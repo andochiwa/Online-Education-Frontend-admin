@@ -18,7 +18,7 @@
 
 <script>
 
-import subject from '@/api/teacher/subject'
+import subject from '@/api/education/subject'
 
 export default {
   watch: {

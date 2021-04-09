@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import teacher from '@/api/teacher/teacher.js'
+import teacher from '@/api/education/teacher.js'
 
 export default {
   data() {
