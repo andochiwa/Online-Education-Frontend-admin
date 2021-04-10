@@ -9,11 +9,30 @@
       <el-step title="发布课程"></el-step>
     </el-steps>
 
+    <el-button type="text" @click="dialogFormVisible = true">添加章节</el-button>
+
+    <!--  添加章节表单  -->
+    <el-dialog title="添加章节" :visible.sync="dialogFormVisible">
+      <el-form :model="chapter" label-width="120px">
+        <el-form-item label="章节标题">
+          <el-input v-model="chapter.title"></el-input>
+        </el-form-item>
+        <el-form-item label="章节排序">
+          <el-input-number v-model="chapter.sort" :min="0"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
+
     <el-tree :data="chapterVideoList" :props="defaultProps"></el-tree>
 
     <el-form label-width="200px">
       <el-form-item>
-        <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="previous">上一步</el-button>
+        <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="previous">上一步
+        </el-button>
         <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
@@ -33,7 +52,9 @@ export default {
       defaultProps: {
         children: 'children',
         label: 'title'
-      }
+      },
+      chapter: {},
+      dialogFormVisible: false
     }
   },
   created() {

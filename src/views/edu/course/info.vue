@@ -9,6 +9,7 @@
       <el-step title="发布课程"></el-step>
     </el-steps>
 
+    <!--  课程标题  -->
     <el-form label-width="200px" style="width: 50%">
       <el-form-item label="课程标题">
         <el-input v-model="courseInfo.title" placeholder="请输入课程标题"/>
@@ -23,6 +24,7 @@
         </el-cascader>
       </el-form-item>
 
+      <!--  课程教师  -->
       <el-form-item label="课程教师">
         <el-select v-model="courseInfo.teacherId" placeholder="请选择课程教师">
           <el-option
@@ -32,14 +34,22 @@
         </el-select>
       </el-form-item>
 
+      <!--  总课时  -->
       <el-form-item label="总课时">
         <el-input-number :min="0" v-model="courseInfo.lessonNum"/>
       </el-form-item>
 
+      <!--  课程价格  -->
+      <el-form-item label="课程价格">
+        <el-input-number :min="0" v-model="courseInfo.price" placeholder="请输入课程价格"/>
+      </el-form-item>
+
+      <!--  课程简介  -->
       <el-form-item label="课程简介">
         <tinymce :height="300" v-model="courseInfo.description"/>
       </el-form-item>
 
+      <!--  课程封面  -->
       <el-form-item label="课程封面">
         <el-upload
           :action="BASE_API + '/edu-oss/file'"
@@ -52,9 +62,6 @@
         </el-upload>
       </el-form-item>
 
-      <el-form-item label="课程价格">
-        <el-input-number :min="0" v-model="courseInfo.price" placeholder="请输入课程价格"/>
-      </el-form-item>
     </el-form>
 
     <el-form label-width="200px">
