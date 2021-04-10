@@ -117,6 +117,8 @@ export default {
     },
     // 修改教师
     updateTeacher() {
+      this.teacherData.gmtCreate = null
+      this.teacherData.gmtModified = null
       teacher.updateTeacherById(this.teacherData)
         .then(() => {
           this.$message({
