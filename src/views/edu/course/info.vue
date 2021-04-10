@@ -66,7 +66,7 @@
 
     <el-form label-width="200px">
       <el-form-item>
-        <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="next">下一步</el-button>
+        <el-button style="margin-top: 12px;" type="primary" icon="el-icon-right" :disabled="disabledSaveButton" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
 

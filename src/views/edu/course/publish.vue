@@ -11,8 +11,8 @@
 
     <el-form label-width="200px">
       <el-form-item>
-        <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="previous">上一步</el-button>
-        <el-button style="margin-top: 12px;" type="primary" :disabled="disabledSaveButton" @click="next">发布课程</el-button>
+        <el-button style="margin-top: 12px;" type="primary" icon="el-icon-back" :disabled="disabledSaveButton" @click="previous">上一步</el-button>
+        <el-button style="margin-top: 12px;" type="primary" icon="el-icon-check" :disabled="disabledSaveButton" @click="next">发布课程</el-button>
       </el-form-item>
     </el-form>
 

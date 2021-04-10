@@ -5,21 +5,21 @@ export default {
   getChapterVideo(courseId) {
     return request({
       url: `/eduservice/chapter/sort/${courseId}`,
-      type: 'get'
+      method: 'get'
     })
   },
   // 根据章节id获取章节
   getChapter(chapterId) {
     return request({
       url: `/eduservice/chapter/${chapterId}`,
-      type: 'get'
+      method: 'get'
     })
   },
   // 保存章节数据
   saveChapter(chapter) {
     return request({
       url: '/eduservice/chapter',
-      type: 'post',
+      method: 'post',
       data: chapter
     })
   },
@@ -27,7 +27,7 @@ export default {
   updateChapter(chapter) {
     return request({
       url: '/eduservice/chapter',
-      type: 'put',
+      method: 'put',
       data: chapter
     })
   },
@@ -35,7 +35,7 @@ export default {
   removeChapter(chapterId) {
     return request({
       url: `/eduservice/chapter/${chapterId}`,
-      type: 'delete'
+      method: 'delete'
     })
   },
 
