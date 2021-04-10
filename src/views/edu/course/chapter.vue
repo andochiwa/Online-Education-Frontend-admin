@@ -151,7 +151,7 @@ export default {
       },
       video: {
         sort: 0,
-        isFree: true
+        isFree: 1
       },
       dialogChapter: false,
       dialogVideo: false
