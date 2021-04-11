@@ -64,6 +64,19 @@ export default {
       this.$router.push({
         path: '/course/chapter/' + this.courseId
       })
+    },
+    // 发布课程
+    publish() {
+      course.updatePublishCourseInfo(this.courseId)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '发布课程成功'
+          })
+          this.$router.push({
+            path: '/course/list'
+          })
+        })
     }
   }
 }

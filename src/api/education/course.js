@@ -37,5 +37,12 @@ export default {
       url: `/eduservice/course/publish/${courseId}`,
       method: 'get'
     })
+  },
+  // 发布课程，发送请求修改发布状态
+  updatePublishCourseInfo(courseId) {
+    return request({
+      url: `/eduservice/course/publish/${courseId}`,
+      method: 'put'
+    })
   }
 }
