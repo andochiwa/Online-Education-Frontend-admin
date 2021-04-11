@@ -44,5 +44,13 @@ export default {
       url: `/eduservice/course/publish/${courseId}`,
       method: 'put'
     })
+  },
+  // 获取所有课程 条件查询
+  getConditionCourseInfo(current, limit, courseQuery) {
+    return request({
+      url: `/eduservice/course/condition/${current}/${limit}`,
+      method: 'post',
+      data: courseQuery
+    })
   }
 }

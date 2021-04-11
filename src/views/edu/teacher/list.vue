@@ -50,7 +50,7 @@
     </el-form>
 
     <!-- 数据表单 -->
-    <el-table :data="list" :cell-style="{'text-align':'center'}" border style="width: 100%">
+    <el-table :data="list" :header-cell-style="{textAlign: 'center'}" :cell-style="{'text-align':'center'}" border style="width: 100%">
       <el-table-column label="序号">
         <template slot-scope="scope">
           {{ (page - 1) * limit + scope.$index + 1 }}
