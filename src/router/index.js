@@ -47,7 +47,7 @@ export const constantRoutes = [
         path: 'table',
         name: '教师列表',
         component: () => import('@/views/edu/teacher/list'),
-        meta: { title: '教师列表', icon: 'nested' }
+        meta: { title: '教师列表', icon: 'table' }
       },
       {
         path: 'save',
@@ -70,13 +70,13 @@ export const constantRoutes = [
     component: Layout,
     name: '课程分类管理',
     redirect: '/subject/table',
-    meta: { title: '课程分类管理', icon: 'nested'},
+    meta: { title: '课程分类管理', icon: 'tree'},
     children: [
       {
         path: 'list',
         name: '课程分类列表',
         component: () => import('@/views/edu/subject/list'),
-        meta: { title: '课程分类列表', icon: 'tree'}
+        meta: { title: '课程分类列表', icon: 'nested'}
       },
       {
         path: 'save',

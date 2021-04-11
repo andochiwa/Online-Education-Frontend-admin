@@ -52,5 +52,12 @@ export default {
       method: 'post',
       data: courseQuery
     })
+  },
+  // 删除课程数据，包括章节和小节
+  deleteCourseInfo(courseId) {
+    return request({
+      url: `/eduservice/course/${courseId}`,
+      method: 'delete'
+    })
   }
 }

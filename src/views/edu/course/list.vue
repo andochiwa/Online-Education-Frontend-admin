@@ -54,7 +54,7 @@
           <router-link :to="'/course/info/' + scope.row.id">
             <el-button type="primary" icon="el-icon-edit" circle></el-button>
           </router-link>
-          <el-button type="danger" icon="el-icon-delete" @click="deleteTeacherById(scope.row.id)" circle></el-button>
+          <el-button type="danger" icon="el-icon-delete" @click="deleteCourseInfo(scope.row.id)" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -107,13 +107,13 @@ export default {
       this.getList()
     },
     // 删除
-    deleteTeacherById(id) {
-      this.$confirm('此操作将永久删除该记录, 是否继续?', '提示', {
+    deleteCourseInfo(id) {
+      this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        course.deleteTeacherById(id)
+        course.deleteCourseInfo(id)
           .then(() => {
             this.$message({
               type: 'success',
