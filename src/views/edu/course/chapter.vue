@@ -43,7 +43,15 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="上传视频">
-      <!--    TODO      -->
+          <el-upload
+            class="upload-video"
+            :action="BASE_URL + '/edu-vod/video'"
+            :limit="1"
+            :on-success="handleSuccessUpload"
+            :on-remove="handleRemoveUpload"
+            accept="video/*">
+            <el-button size="small" type="primary">点击上传</el-button>
+          </el-upload>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -154,7 +162,8 @@ export default {
         isFree: 1
       },
       dialogChapter: false,
-      dialogVideo: false
+      dialogVideo: false,
+      BASE_URL: process.env.VUE_APP_BASE_API
     }
   },
   created() {
@@ -187,6 +196,17 @@ export default {
       this.$router.push({
         path: '/course/info/' + this.chapter.courseId
       })
+    },
+    // 上传视频成功后
+    handleSuccessUpload(result, file) {
+      this.video.videoSourceId = result.data.videoId
+      this.video.videoOriginalName = file.name
+      console.log(this.video)
+    },
+    // 删除视频时
+    handleRemoveUpload() {
+      this.video.videoSourceId = ''
+      this.video.videoOriginalName = ''
     },
     /* =================对于小节的操作=========================== */
     // 小节保存或更新按钮点击后
