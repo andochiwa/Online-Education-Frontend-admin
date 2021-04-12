@@ -47,8 +47,10 @@
             class="upload-video"
             :action="BASE_URL + '/edu-vod/video'"
             :limit="1"
+            :before-upload="beforeUpload"
             :on-success="handleSuccessUpload"
             :on-remove="handleRemoveUpload"
+            :file-list="fileList"
             accept="video/*">
             <el-button size="small" type="primary">点击上传</el-button>
           </el-upload>
@@ -163,7 +165,9 @@ export default {
       },
       dialogChapter: false,
       dialogVideo: false,
-      BASE_URL: process.env.VUE_APP_BASE_API
+      BASE_URL: process.env.VUE_APP_BASE_API,
+      fileList: [],
+      videoMark: false // 确认视频是否上传完毕
     }
   },
   created() {
@@ -199,9 +203,9 @@ export default {
     },
     // 上传视频成功后
     handleSuccessUpload(result, file) {
+      this.videoMark = false
       this.video.videoSourceId = result.data.videoId
       this.video.videoOriginalName = file.name
-      console.log(this.video)
     },
     // 删除视频时
     handleRemoveUpload() {
@@ -211,9 +215,23 @@ export default {
           this.video.videoOriginalName = ''
         })
     },
+    // 上传视频中，把标识置为true
+    beforeUpload() {
+      this.videoMark = true
+    },
     /* =================对于小节的操作=========================== */
     // 小节保存或更新按钮点击后
     buttonSaveVideo() {
+      // 如果视频还在上传中
+      if (this.videoMark) {
+        this.$message({
+          type: 'error',
+          message: '视频还在上传中，请等待上传完毕'
+        })
+        return false
+      }
+      this.video.gmtCreate = null
+      this.video.gmtModified = null
       if (this.video.id) {
         this.updateVideo()
       } else {
@@ -241,8 +259,6 @@ export default {
     },
     // 更新小节
     updateVideo() {
-      this.video.gmtCreate = null
-      this.video.gmtModified = null
       video.updateVideo(this.video)
         .then(() => {
           // 关闭弹框
@@ -262,11 +278,16 @@ export default {
       video.getVideo(data.id)
         .then(result => {
           this.video = result.data.items
+          this.fileList = [{
+            name: result.data.items.videoOriginalName
+          }]
         })
     },
     // 添加小节按钮点击后
     videoOpenAdd(data) {
       this.dialogVideo = true
+      // 清空文件列表
+      this.fileList = []
       // 初始化
       this.video.id = ''
 
@@ -302,8 +323,6 @@ export default {
     },
     // 修改章节
     updateChapter() {
-      this.chapter.gmtCreate = null
-      this.chapter.gmtModified = null
       chapter.updateChapter(this.chapter)
         .then(() => {
           // 关闭弹框
@@ -319,6 +338,8 @@ export default {
     },
     // 章节保存或更新按钮点击后
     buttonSave() {
+      this.chapter.gmtCreate = null
+      this.chapter.gmtModified = null
       if (this.chapter.id) {
         this.updateChapter()
       } else {
