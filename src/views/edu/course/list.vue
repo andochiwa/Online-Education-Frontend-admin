@@ -15,7 +15,7 @@
         </el-select>
       </el-form-item>
 
-      <!-- 设置查询时的函数 TODO -->
+      <!-- 设置查询时的函数 -->
       <el-form-item>
         <el-button type="primary" @click="getList()">查询</el-button>
       </el-form-item>
