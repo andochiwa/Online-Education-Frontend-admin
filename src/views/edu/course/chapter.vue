@@ -205,8 +205,11 @@ export default {
     },
     // 删除视频时
     handleRemoveUpload() {
-      this.video.videoSourceId = ''
-      this.video.videoOriginalName = ''
+      video.deleteVideoFile(this.video.videoSourceId)
+        .then(() => {
+          this.video.videoSourceId = ''
+          this.video.videoOriginalName = ''
+        })
     },
     /* =================对于小节的操作=========================== */
     // 小节保存或更新按钮点击后

@@ -31,4 +31,11 @@ export default {
       method: 'get'
     })
   },
+  // 删除视频
+  deleteVideoFile(videoId) {
+    return request({
+      url: `/edu-vod/video/${videoId}`,
+      method: 'delete'
+    })
+  }
 }
