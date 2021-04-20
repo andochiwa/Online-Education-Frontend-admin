@@ -1,30 +1,42 @@
 <template>
-  <div class="dashboard-container">
-    <div class="dashboard-text">name: {{ name }}</div>
+  <div class="app-container">
+    <el-form :inline="true">
+      <el-form-item label="日期">
+        <el-date-picker v-model="date" type="date"
+                        placeholder="选择要统计的日期"
+                        value-format="yyyy-MM-dd"
+        />
+        <el-button :disabled="btnDisabled" type="primary" @click="createStat()">
+          生成统计图表
+        </el-button>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import stat from '@/api/stat'
 
 export default {
-  name: 'Dashboard',
-  computed: {
-    ...mapGetters([
-      'name'
-    ])
+  data() {
+    return {
+      date: ''
+    }
+  },
+  created() {
+  },
+  methods: {
+    // 生成统计数据
+    createStat() {
+      stat.createStatData(date)
+        .then(result => {
+
+        })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.dashboard {
-  &-container {
-    margin: 30px;
-  }
-  &-text {
-    font-size: 30px;
-    line-height: 46px;
-  }
-}
+
 </style>
