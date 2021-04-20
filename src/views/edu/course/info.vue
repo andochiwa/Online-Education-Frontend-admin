@@ -10,7 +10,7 @@
     </el-steps>
 
     <!--  课程标题  -->
-    <el-form label-width="200px" style="width: 50%">
+    <el-form label-width="200px" style="width: 65%">
       <el-form-item label="课程标题">
         <el-input v-model="courseInfo.title" placeholder="请输入课程标题"/>
       </el-form-item>
