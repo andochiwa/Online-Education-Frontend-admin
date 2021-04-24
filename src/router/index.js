@@ -131,17 +131,65 @@ export const constantRoutes = [
   },
 
   {
-    path: 'acl',
+    path: '/acl',
     component: Layout,
     name: '课程管理',
-    redirect: '/acl/user/list',
+    redirect: '/acl/menu/list',
     meta: { title: '权限管理', icon: 'password'},
     children: [
       {
         path: 'user/list',
         name: '用户管理',
-        component: () => import()
-      }
+        component: () => import('@/views/acl/user/list'),
+        meta: {title: '用户管理', icon: 'password'}
+      },
+      {
+        path: 'user/add',
+        name: '用户添加',
+        component: () => import('@/views/acl/user/form'),
+        meta: {title: '用户添加', icon: 'password'},
+        hidden: true
+      },
+      {
+        path: 'user/update/:id',
+        name: '用户修改',
+        component: () => import('@/views/acl/user/form'),
+        meta: {title: '用户修改', icon: 'password'},
+        hidden: true
+      },
+      {
+        path: 'role/list',
+        name: '角色管理',
+        component: () => import('@/views/acl/role/list'),
+        meta: {title: '角色管理', icon: 'password'}
+      },
+      {
+        path: 'role/add',
+        name: '角色添加',
+        component: () => import('@/views/acl/role/form'),
+        meta: {title: '角色添加', icon: 'password'},
+        hidden: true
+      },
+      {
+        path: 'role/update/:id',
+        name: '角色修改',
+        component: () => import('@/views/acl/role/form'),
+        meta: {title: '角色修改', icon: 'password'},
+        hidden: true
+      },
+      {
+        path: 'role/distribution/:id',
+        name: '角色权限',
+        component: () => import('@/views/acl/role/roleForm'),
+        meta: { title: '角色权限',icon: 'password' },
+        hidden: true
+      },
+      {
+        path: 'menu/list',
+        name: '菜单管理',
+        component: () => import('@/views/acl/menu/list'),
+        meta: { title: '菜单管理',icon: 'password' }
+      },
     ]
   },
 
