@@ -8,29 +8,15 @@
       default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
-      <el-table-column
-        prop="name"
-        label="名称"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="path"
-        label="访问路径"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="component"
-        label="组件路径"
-      >
-      </el-table-column>
-      <el-table-column
-        prop="permissionValue"
-        label="权限值"
-      >
-      </el-table-column>
-      <el-table-column
-        label="操作"
-      >
+      <el-table-column prop="name" label="名称"/>
+
+      <el-table-column prop="path" label="访问路径"/>
+
+      <el-table-column prop="component" label="组件路径"/>
+
+      <el-table-column prop="permissionValue" label="权限值"/>
+
+      <el-table-column label="操作">
         <template slot-scope="scope">
           <!-- 添加菜单 -->
           <el-button
@@ -39,8 +25,7 @@
             size="mini"
             icon="el-icon-circle-plus-outline"
             @click="dialogFormVisible = true; menu.pid = scope.row.id"
-          >
-          </el-button>
+          />
           <!-- 添加功能 -->
           <el-button
             v-if="scope.row.level === 2"
@@ -48,8 +33,7 @@
             size="mini"
             icon="el-icon-circle-plus-outline"
             @click="dialogPermissionVisible = true; permission.pid = scope.row.id"
-          >
-          </el-button>
+          />
           <!-- 修改功能 -->
           <el-button
             v-if="scope.row.level === 3"
@@ -57,8 +41,7 @@
             size="mini"
             icon="el-icon-edit"
             @click="updateFunction(scope.row)"
-          >
-          </el-button>
+          />
           <!-- 修改菜单 -->
           <el-button
             v-if="scope.row.level !== 3"
@@ -66,16 +49,14 @@
             size="mini"
             icon="el-icon-edit"
             @click="updateMenu(scope.row)"
-          >
-          </el-button>
+          />
           <!-- 删除 -->
           <el-button
             type="danger"
             size="mini"
             icon="el-icon-delete"
             @click="deletePermission(scope.row)"
-          >
-          </el-button>
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -251,7 +232,6 @@ export default {
       })
     },
     append() {
-      console.log(this.menu)
       this.$refs.menu.validate(valid => {
         if (valid) {
           if (!this.menu.id) { // 添加

@@ -20,7 +20,9 @@ export default {
     return request({
       url: `/acl/permission/auth`,
       method: 'post',
-      params: {roleId, permissionIds}
+      params: {
+        roleId: roleId,
+        permissionIds: permissionIds}
     })
   },
   // 保存菜单或功能
