@@ -1,10 +1,8 @@
 <template>
   <div class="app-container">
-    <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom:30px;"/>
 
     <el-table
       :data="menuInfo"
-      style="width: 100%;margin-bottom: 20px;"
       row-key="id"
       border
       default-expand-all
@@ -13,22 +11,16 @@
       <el-table-column
         prop="name"
         label="名称"
-        sortable
-        width="180"
       >
       </el-table-column>
       <el-table-column
         prop="path"
         label="访问路径"
-        sortable
-        width="180"
       >
       </el-table-column>
       <el-table-column
         prop="component"
         label="组件路径"
-        sortable
-        width="180"
       >
       </el-table-column>
       <el-table-column
@@ -42,7 +34,7 @@
         <template slot-scope="scope">
           <!-- 添加菜单 -->
           <el-button
-            v-if="(scope.row.level == 1 || scope.row.level == 2)"
+            v-if="(scope.row.level === 0 || scope.row.level === 1)"
             type="primary"
             size="mini"
             icon="el-icon-circle-plus-outline"
@@ -51,7 +43,7 @@
           </el-button>
           <!-- 添加功能 -->
           <el-button
-            v-if="scope.row.level == 3"
+            v-if="scope.row.level === 2"
             type="primary"
             size="mini"
             icon="el-icon-circle-plus-outline"
@@ -60,7 +52,7 @@
           </el-button>
           <!-- 修改功能 -->
           <el-button
-            v-if="scope.row.level == 4"
+            v-if="scope.row.level === 3"
             type="success"
             size="mini"
             icon="el-icon-edit"
@@ -69,11 +61,11 @@
           </el-button>
           <!-- 修改菜单 -->
           <el-button
-            v-if="scope.row.level != 4"
+            v-if="scope.row.level !== 3"
             type="success"
             size="mini"
             icon="el-icon-edit"
-            @click="getById(scope.row)"
+            @click="updateMenu(scope.row)"
           >
           </el-button>
           <!-- 删除 -->
@@ -160,7 +152,6 @@ export default {
         children: 'children',
         label: 'name'
       },
-      filterText: '', // 监听过滤数据用
       dialogFormVisible: false,
       dialogPermissionVisible: false,
       dialogFormValue: '添加菜单',
@@ -177,11 +168,6 @@ export default {
       permission: permissionInfo
     }
   },
-  watch: {
-    filterText(val) {
-      this.$refs.tree.filter(val)
-    }
-  },
   created() {
     this.getListPermission()
   },
@@ -194,19 +180,21 @@ export default {
         })
     },
     // 删除
-    deletePermission() {
+    deletePermission(data) {
       this.$confirm('此操作将永久删除该记录以及子记录，是否继续？', '警告', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         menu.deletePermission(data.id)
-      }).then(() => {
-        this.getListPermission()
-        this.$message({
-          type: 'success',
-          message: '删除成功'
-        })
+          .then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.getListPermission()
+            this.restData()
+          })
       })
     },
     // 保存数据
@@ -217,22 +205,26 @@ export default {
             type: 'success',
             message: '保存成功'
           })
+          this.getListPermission()
           this.restData()
         })
     },
     // 更新数据
     updatePermission(permission) {
+      permission.gmtCreate = ''
+      permission.gmtModified = ''
       menu.updatePermission(permission)
         .then(() => {
           this.$message({
             type: 'success',
             message: '更新成功'
           })
+          this.getListPermission()
           this.restData()
         })
     },
     // 开启菜单修改保存框
-    getById(data) {
+    updateMenu(data) {
       this.dialogFormVisible = true
       this.menu = data
     },
@@ -259,6 +251,7 @@ export default {
       })
     },
     append() {
+      console.log(this.menu)
       this.$refs.menu.validate(valid => {
         if (valid) {
           if (!this.menu.id) { // 添加
