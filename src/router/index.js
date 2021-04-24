@@ -131,6 +131,21 @@ export const constantRoutes = [
   },
 
   {
+    path: 'acl',
+    component: Layout,
+    name: '课程管理',
+    redirect: '/acl/user/list',
+    meta: { title: '权限管理', icon: 'password'},
+    children: [
+      {
+        path: 'user/list',
+        name: '用户管理',
+        component: () => import()
+      }
+    ]
+  },
+
+  {
     path: 'external-link',
     component: Layout,
     children: [

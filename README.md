@@ -2,4 +2,4 @@
 
 [Back-end](https://github.com/andochiwa/Online-Education-Backend)
 
-[Front-end-admin](https://github.com/andochiwa/Online-Education-Frontend-admin)
+[Front-end-web](https://github.com/andochiwa/Online-Education-Frontend-web)
