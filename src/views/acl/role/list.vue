@@ -10,7 +10,7 @@
     </el-form>
 
     <div style="padding-left: 50px">
-      <el-button type="primary" @click="dialogFormVisible = true">添加角色</el-button>
+      <el-button type="primary" @click="dialogFormVisible = true; dialogTitle = '添加角色'">添加角色</el-button>
     </div>
 
     <el-table :data="roleInfo" border>
@@ -131,7 +131,6 @@ export default {
     refreshData() {
       this.role = { id: '' }
       this.name = ''
-      this.searchObj = ''
       this.dialogFormVisible = false
       this.getPageList()
     },
@@ -162,6 +161,7 @@ export default {
     updateHelper(data) {
       this.role = data
       this.dialogFormVisible = true
+      this.dialogTitle = '修改角色'
     }
   }
 }
