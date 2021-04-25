@@ -33,5 +33,12 @@ export default {
       method: 'post',
       data: role
     })
+  },
+  // 根据权限id获取权限列表的所有id
+  getPermissionIdByRoleId(roleId) {
+    return request({
+      url: `/acl/role/auth/${roleId}`,
+      method: 'get'
+    })
   }
 }

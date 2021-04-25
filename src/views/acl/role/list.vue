@@ -6,7 +6,7 @@
       </el-form-item>
 
       <el-button type="primary" icon="el-icon-search" @click="getPageList()">查询</el-button>
-      <el-button type="default" @click="name = ''">清空</el-button>
+      <el-button type="default" @click="refreshData">清空</el-button>
     </el-form>
 
     <div style="padding-left: 50px">
@@ -26,6 +26,9 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
+        <router-link style="padding-right: 10px" :to="`distribution/${scope.row.id}`">
+          <el-button type="info" size="mini" icon="el-icon-lock" />
+        </router-link>
         <el-button type="primary" size="mini" icon="el-icon-edit" @click="updateHelper(scope.row)"/>
         <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRole(scope.row.id)"/>
         </template>
@@ -44,7 +47,7 @@
 
     <!--  添加or修改表单  -->
     <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
-      <el-form :model="role">
+      <el-form ref="role" :model="role" :rules="roleRules">
         <el-form-item label="角色名称" prop="roleName" label-width="120px">
           <el-input v-model="role.roleName" autocomplete="on"></el-input>
         </el-form-item>
@@ -75,7 +78,10 @@ export default {
         id: ''
       },
       dialogTitle: '',
-      dialogFormVisible: false
+      dialogFormVisible: false,
+      roleRules: {
+        roleName: [{required: true, trigger: 'blur', message: '角色名必须输入'}],
+      },
     }
   },
   created() {
@@ -105,14 +111,21 @@ export default {
     },
     // 删除角色
     deleteRole(id) {
-      role.deleteRole(id)
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '删除成功'
+      this.$confirm('此操作将永久删除角色，是否继续？', '警告', {
+        confirmButtonText: '确认删除',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        role.deleteRole(id)
+          .then(() => {
+            this.$message({
+              type: 'success',
+              message: '删除成功'
+            })
+            this.refreshData()
           })
-          this.refreshData()
-        })
+      })
+
     },
     // 刷新页面数据
     refreshData() {
@@ -135,11 +148,15 @@ export default {
     },
     // 对话框确认按钮点击后
     dialogClick() {
-      if (this.role.id) {
-        this.updateRole()
-      } else {
-        this.saveRole()
-      }
+      this.$refs.role.validate(valid => {
+        if (valid) {
+          if (this.role.id) {
+            this.updateRole()
+          } else {
+            this.saveRole()
+          }
+        }
+      })
     },
     // 修改按钮点击后
     updateHelper(data) {
