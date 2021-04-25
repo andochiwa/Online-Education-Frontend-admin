@@ -9,8 +9,10 @@
       ref="tree"
       :default-checked-keys="menuIds">
     </el-tree>
-    <router-link to="list">
-      <el-button type="primary" @click="saveButton"/>
+    <router-link to="../list">
+      <el-button type="primary" @click="saveButton" icon="el-icon-check">
+        保存
+      </el-button>
     </router-link>
   </div>
 </template>
@@ -49,12 +51,18 @@ export default {
       role.getPermissionIdByRoleId(this.roleId)
         .then(result => {
           this.menuIds = result.data.items
-          console.log(this.menuIds)
         })
     },
     // 保存按钮点击后返回list并保存或删除数据
     saveButton(){
       let ids = this.$refs.tree.getCheckedKeys()
+      role.removeOrSavePermission(this.roleId, this.menuIds, ids)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '成功'
+          })
+        })
     }
   }
 }

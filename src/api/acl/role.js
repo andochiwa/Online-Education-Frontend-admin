@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+const qs = require('qs');
+
 export default {
   //分页获取角色
   getPageConditionList(current, limit, name) {
@@ -39,6 +41,19 @@ export default {
     return request({
       url: `/acl/role/auth/${roleId}`,
       method: 'get'
+    })
+  },
+  // 插入或删除权限列表数据
+  removeOrSavePermission(roleId, oldPermissionIds, newPermissionIds) {
+    return request({
+      url: `/acl/role/auth/${roleId}`,
+      method: 'Post',
+      params: {
+        oldPermissionIds: oldPermissionIds,
+        newPermissionIds: newPermissionIds},
+      paramsSerializer: function(params) {
+        return qs.stringify(params, {arrayFormat: 'repeat'})
+      }
     })
   }
 }
