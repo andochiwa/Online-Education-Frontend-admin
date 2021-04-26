@@ -29,7 +29,8 @@ export default {
         label: 'name'
       },
       menu: [], // 树形数据
-      menuIds: [], // 已有权限的id
+      menuIds: [], // 默认选中权限的id
+      oldIds: [], // 已有权限的id
       roleId: '' // 角色id
     }
   },
@@ -50,13 +51,26 @@ export default {
     getPermissionIdByRoleId() {
       role.getPermissionIdByRoleId(this.roleId)
         .then(result => {
-          this.menuIds = result.data.items
+          let data = result.data.items
+          this.menuIds = []
+          for (let i = 0; i < data.length; i++) {
+            this.oldIds.push(data[i].id)
+            if (data[i].type === 2) {
+              this.menuIds.push(data[i].id)
+            }
+          }
         })
     },
     // 保存按钮点击后返回list并保存或删除数据
     saveButton(){
-      let ids = this.$refs.tree.getCheckedKeys()
-      role.removeOrSavePermission(this.roleId, this.menuIds, ids)
+      let temp = this.$refs.tree.getCheckedNodes(false, true)
+      let ids = []
+      for (let i = 0; i < temp.length; i++) {
+        ids.push(temp[i].id)
+      }
+      console.log(ids)
+      console.log(this.oldIds)
+      role.removeOrSavePermission(this.roleId, this.oldIds, ids)
         .then(() => {
           this.$message({
             type: 'success',

@@ -1,26 +1,28 @@
 import request from '@/utils/request'
 
-// export function login(username, password) {
-//   return request({
-//     url: '/admin/acl/login',
-//     method: 'post',
-//     data: {
-//       username,password
-//     }
-//   })
-// }
-
-export function login(data) {
+// 登陆
+export function login(username, password) {
   return request({
-    url: '/eduservice/user/login',
+    url: '/acl/index/login',
     method: 'post',
-    data
+    data: {
+      username,password
+    }
   })
 }
 
+// export function login(data) {
+//   return request({
+//     url: '/eduservice/user/login',
+//     method: 'post',
+//     data
+//   })
+// }
+
+// 获取用户信息
 export function getInfo(token) {
   return request({
-    url: '/eduservice/user/info',
+    url: '/acl/index/info',
     method: 'get',
     params: { token }
   })
@@ -34,10 +36,19 @@ export function getInfo(token) {
 //   })
 // }
 
+// 登出
 export function logout() {
   return request({
-    url: '/admin/acl/logout',
+    url: '/acl/index/logout',
     method: 'post'
+  })
+}
+
+// 获取菜单权限数据
+export function getMenu() {
+  return request({
+    url: '/acl/index/menu',
+    method: 'get'
   })
 }
 

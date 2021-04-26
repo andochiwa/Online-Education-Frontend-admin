@@ -37,6 +37,23 @@ export const constantRoutes = [
   },
 
   {
+    path: 'external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/andochiwa/Online-Education-Frontend-admin',
+        meta: { title: '项目源码', icon: 'link' }
+      }
+    ]
+  },
+
+  // 404 page must be placed at the end !!!
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+// 动态路由
+export const asyncRoutes = [
+  {
     path: '/teacher',
     component: Layout,
     redirect: '/teacher/table',
@@ -164,20 +181,6 @@ export const constantRoutes = [
       },
     ]
   },
-
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/andochiwa/Online-Education-Frontend-admin',
-        meta: { title: '项目源码', icon: 'link' }
-      }
-    ]
-  },
-
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
@@ -188,10 +191,9 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
-export function resetRouter() {
-  const newRouter = createRouter()
-  router.matcher = newRouter.matcher // reset router
-}
+// export function resetRouter() {
+//   const newRouter = createRouter()
+//   router.matcher = newRouter.matcher // reset router
+// }
 
 export default router
