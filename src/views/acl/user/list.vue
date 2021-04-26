@@ -26,9 +26,7 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <router-link style="padding-right: 10px" :to="`role/${scope.row.id}`">
-            <el-button type="info" size="mini" icon="el-icon-lock" />
-          </router-link>
+          <el-button type="info" size="mini" icon="el-icon-lock" @click="getRoleHelper(scope.row)" />
           <el-button type="primary" size="mini" icon="el-icon-edit" @click="updateHelper(scope.row)"/>
           <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteUser(scope.row.id)"/>
         </template>
@@ -46,7 +44,7 @@
     </el-pagination>
 
     <!--  添加or修改表单  -->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :before-close="refreshData" :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form ref="user" :model="user" :rules="userRules">
         <el-form-item label="用户名" prop="username" label-width="120px">
           <el-input v-model="user.username" autocomplete="on"></el-input>
@@ -57,7 +55,6 @@
         <el-form-item label="用户昵称" prop="nickName" label-width="120px">
           <el-input v-model="user.nickName" autocomplete="on"></el-input>
         </el-form-item>
-      <!--    上传头像  todo  -->
         <el-form-item label="上传头像" label-width="120px">
           <el-upload
             class="avatar-uploader"
@@ -66,7 +63,7 @@
             :on-success="handleAvatarSuccess"
             accept="image/*"
           >
-            <img v-if="imgUrl" :src="imgUrl" class="avatar" alt="">
+            <img v-if="user.avatar" :src="user.avatar" class="avatar" alt="">
             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
           </el-upload>
         </el-form-item>
@@ -77,11 +74,24 @@
         <el-button type="primary" @click="dialogClick">确 定</el-button>
       </div>
     </el-dialog>
+    <!--  修改角色框  -->
+    <el-dialog :before-close="refreshData" title="用户角色切换" :visible.sync="dialogUserRole">
+      <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+      <div style="margin: 15px 0;"></div>
+      <el-checkbox-group v-model="checkedRole" @change="handleCheckedRoleChange">
+        <el-checkbox v-for="role in role" :label="role.id" :key="role.id">{{role.roleName}}</el-checkbox>
+      </el-checkbox-group>
+      <div style="margin: 15px 0;"></div>
+      <el-button type="primary" @click="saveButton" icon="el-icon-check">
+        保存
+      </el-button>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import user from '@/api/acl/user'
+import role from '@/api/acl/role'
 
 export default {
   data() {
@@ -94,22 +104,35 @@ export default {
       user: {
         id: ''
       },
+      checkAll: false,
+      role: [], // 所有权限
+      checkedRole: [], // 选中的
       dialogTitle: '',
+      roleOldId: [], // 保存旧角色id用
       dialogFormVisible: false,
+      dialogUserRole: false,
+      isIndeterminate: false,
       userRules: {
         username: [{required: true, trigger: 'blur', message: '用户名必须输入'}],
         password: [{required: true, trigger: 'blur', message: '密码必须输入'}],
         nickName: [{required: true, trigger: 'blur', message: '用户昵称必须输入'}],
       },
       // 以下是头像部分
-      imgUrl: '',
       actionUrl: process.env.VUE_APP_BASE_API + '/edu-oss/file',
     }
   },
   created() {
     this.getPageList()
+    this.getRole()
   },
   methods: {
+    // 查询所有角色
+    getRole() {
+      role.getAllRole()
+        .then(result => {
+          this.role = result.data.items
+        })
+    },
     // 分页获取用户
     getPageList(page = 1) {
       user.getPageConditionList(page, this.limit, this.name)
@@ -154,7 +177,12 @@ export default {
       this.user = { id: '' }
       this.name = ''
       this.dialogFormVisible = false
+      this.dialogUserRole = false
+      this.isIndeterminate = false
       this.getPageList()
+      this.checkedRole = []
+      this.roleOldId = []
+      this.checkAll = false
     },
     // 保存数据
     saveUser() {
@@ -186,9 +214,48 @@ export default {
       this.dialogTitle = '修改用户信息'
     },
     // 上传头像成功后
-    handleAvatarSuccess(res, file) {
-      this.imgUrl = URL.createObjectURL(file.raw)
+    handleAvatarSuccess(res) {
       this.user.avatar = res.data.url
+    },
+    // 修改角色按钮点击后
+    getRoleHelper(data) {
+      this.user = data
+      this.dialogUserRole = true
+      role.getRoleByUserId(data.id)
+        .then(result => {
+          for (let i = 0; i < result.data.items.length; i++) {
+            this.checkedRole.push(result.data.items[i].id)
+            this.roleOldId.push(result.data.items[i].id)
+          }
+          this.checkAll = result.data.items.length === this.role.length
+        })
+    },
+    // 选中多选框
+    handleCheckedRoleChange(data) {
+      this.checkAll = data.length === this.role.length
+      this.isIndeterminate = data.length > 0 && data.length < this.role.length
+    },
+    // 多选框全选
+    handleCheckAllChange(data) {
+      if (data) {
+        for (let i = 0; i < this.role.length; i++) {
+          this.checkedRole.push(this.role[i].id)
+        }
+      } else {
+        this.checkedRole = []
+      }
+      this.isIndeterminate = false;
+    },
+    // 角色保存按钮
+    saveButton() {
+      user.saveOrRemoveRole(this.user.id, this.roleOldId, this.checkedRole)
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: '修改成功'
+          })
+          this.refreshData()
+        })
     }
   }
 }

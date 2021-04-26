@@ -144,13 +144,6 @@ export const constantRoutes = [
         meta: {title: '用户管理', icon: 'password'}
       },
       {
-        path: 'user/role/:id',
-        name: `用户角色`,
-        component: () => import('@/views/acl/user/roleForm'),
-        meta: {title: '用户角色', icon: 'password'},
-        hidden: true
-      },
-      {
         path: 'role/list',
         name: '角色管理',
         component: () => import('@/views/acl/role/list'),

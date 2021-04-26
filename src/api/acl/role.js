@@ -55,5 +55,19 @@ export default {
         return qs.stringify(params, {arrayFormat: 'repeat'})
       }
     })
-  }
+  },
+  // 查询所有角色
+  getAllRole() {
+    return request({
+      url: `/acl/role/user`,
+      method: 'get'
+    })
+  },
+  // 根据用户id查询角色
+  getRoleByUserId(userId) {
+    return request({
+      url: `/acl/role/user/${userId}`,
+      method: 'get'
+    })
+  },
 }

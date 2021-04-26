@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+const qs = require('qs')
+
 export default {
   // 查询所有分层菜单
   getListPermission() {
@@ -22,7 +24,11 @@ export default {
       method: 'post',
       params: {
         roleId: roleId,
-        permissionIds: permissionIds}
+        permissionIds: permissionIds
+      },
+      paramsSerializer: function(params) {
+        return qs.stringify(params, {arrayFormat: 'repeat'})
+      }
     })
   },
   // 保存菜单或功能

@@ -46,7 +46,7 @@
     </el-pagination>
 
     <!--  添加or修改表单  -->
-    <el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible">
+    <el-dialog :before-close="refreshData" :title="dialogTitle" :visible.sync="dialogFormVisible">
       <el-form ref="role" :model="role" :rules="roleRules">
         <el-form-item label="角色名称" prop="roleName" label-width="120px">
           <el-input v-model="role.roleName" autocomplete="on"></el-input>

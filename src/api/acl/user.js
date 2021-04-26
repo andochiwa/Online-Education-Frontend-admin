@@ -1,5 +1,7 @@
 import request from '@/utils/request'
 
+const qs = require('qs')
+
 export default {
   // 条件分页获得用户列表
   getPageConditionList(current, limit, name) {
@@ -30,6 +32,20 @@ export default {
       url: `/acl/user`,
       method: 'post',
       data: user
+    })
+  },
+  // 保存或删除用户角色
+  saveOrRemoveRole(userId, oldRoleIds, newRoleIds) {
+    return request({
+      url: `/acl/user/role/${userId}`,
+      method: 'post',
+      params: {
+        oldRoleIds: oldRoleIds,
+        newRoleIds: newRoleIds
+      },
+      paramsSerializer: function(params) {
+        return qs.stringify(params, {arrayFormat: 'repeat'})
+      }
     })
   }
 }
