@@ -37,13 +37,16 @@ router.beforeEach(async(to, from, next) => {
           await store.dispatch('GetInfo')
 
           // 取后台路由
-          const accessRoutes = await store.dispatch('permission/generateRoutes')
+          let accessRoutes = await store.dispatch('permission/generateRoutes')
+          // 为了防止刷新后404，在动态路由里push404页面
+          accessRoutes.push({
+            path: '*',
+            redirect: '/404',
+            hidden: true
+          })
 
           // dynamically add accessible routes
-          console.log(store)
-          // router.options.routes.push(accessRoutes)
           router.addRoutes(accessRoutes)
-          console.log(router)
 
           next({...to, replace: true})
         } catch (error) {
