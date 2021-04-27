@@ -10,7 +10,7 @@
     </el-form>
 
     <div style="padding-left: 50px">
-      <el-button type="primary" @click="dialogFormVisible = true; dialogTitle = '添加用户'">添加用户</el-button>
+      <el-button v-if="hasPerm('user.add')" type="primary" @click="dialogFormVisible = true; dialogTitle = '添加用户'">添加用户</el-button>
     </div>
 
     <el-table :data="userInfo" border>
@@ -26,9 +26,9 @@
 
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="info" size="mini" icon="el-icon-lock" @click="getRoleHelper(scope.row)" />
-          <el-button type="primary" size="mini" icon="el-icon-edit" @click="updateHelper(scope.row)"/>
-          <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteUser(scope.row.id)"/>
+          <el-button v-if="hasPerm('user.assign')" type="info" size="mini" icon="el-icon-lock" @click="getRoleHelper(scope.row)" />
+          <el-button v-if="hasPerm('user.update')" type="primary" size="mini" icon="el-icon-edit" @click="updateHelper(scope.row)"/>
+          <el-button v-if="hasPerm('user.remove')" type="danger" size="mini" icon="el-icon-delete" @click="deleteUser(scope.row.id)"/>
         </template>
       </el-table-column>
     </el-table>
@@ -49,8 +49,8 @@
         <el-form-item label="用户名" prop="username" label-width="120px">
           <el-input v-model="user.username" autocomplete="on"></el-input>
         </el-form-item>
-        <el-form-item type="password" label="密码" prop="password" label-width="120px">
-          <el-input v-model="user.password" autocomplete="on"></el-input>
+        <el-form-item label="密码" prop="password" label-width="120px">
+          <el-input type="password" v-model="user.password" autocomplete="on"></el-input>
         </el-form-item>
         <el-form-item label="用户昵称" prop="nickName" label-width="120px">
           <el-input v-model="user.nickName" autocomplete="on"></el-input>

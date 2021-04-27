@@ -10,7 +10,7 @@
     </el-form>
 
     <div style="padding-left: 50px">
-      <el-button type="primary" @click="dialogFormVisible = true; dialogTitle = '添加角色'">添加角色</el-button>
+      <el-button type="primary" v-if="hasPerm('role.add')" @click="dialogFormVisible = true; dialogTitle = '添加角色'">添加角色</el-button>
     </div>
 
     <el-table :data="roleInfo" border>
@@ -27,10 +27,10 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
         <router-link style="padding-right: 10px" :to="`distribution/${scope.row.id}`">
-          <el-button type="info" size="mini" icon="el-icon-lock" />
+          <el-button v-if="hasPerm('role.acl')" type="info" size="mini" icon="el-icon-lock" />
         </router-link>
-        <el-button type="primary" size="mini" icon="el-icon-edit" @click="updateHelper(scope.row)"/>
-        <el-button type="danger" size="mini" icon="el-icon-delete" @click="deleteRole(scope.row.id)"/>
+        <el-button v-if="hasPerm('role.update')" type="primary" size="mini" icon="el-icon-edit" @click="updateHelper(scope.row)"/>
+        <el-button v-if="hasPerm('role.remove')" type="danger" size="mini" icon="el-icon-delete" @click="deleteRole(scope.row.id)"/>
         </template>
       </el-table-column>
     </el-table>

@@ -38,9 +38,6 @@
           auto-complete="on"
           @keyup.enter.native="handleLogin"
         />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="eye"/>
-        </span>
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
@@ -59,7 +56,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
 export default {
   name: 'Login',
   data() {
@@ -111,6 +107,7 @@ export default {
       })
     },
     handleLogin() {
+
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true

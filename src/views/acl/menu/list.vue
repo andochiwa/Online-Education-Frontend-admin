@@ -5,7 +5,6 @@
       :data="menuInfo"
       row-key="id"
       border
-      default-expand-all
       :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
       <el-table-column prop="name" label="名称"/>
@@ -20,23 +19,23 @@
         <template slot-scope="scope">
           <!-- 添加菜单 -->
           <el-button
-            v-if="(scope.row.level === 0 || scope.row.level === 1)"
+            v-if="(scope.row.level === 0 || scope.row.level === 1) && hasPerm('permission.add')"
             type="primary"
             size="mini"
             icon="el-icon-circle-plus-outline"
-            @click="dialogFormVisible = true; menu.pid = scope.row.id"
+            @click="restData; dialogFormVisible = true; menu.pid = scope.row.id"
           />
           <!-- 添加功能 -->
           <el-button
-            v-if="scope.row.level === 2"
+            v-if="scope.row.level === 2 && hasPerm('permission.add')"
             type="primary"
             size="mini"
             icon="el-icon-circle-plus-outline"
-            @click="dialogPermissionVisible = true; permission.pid = scope.row.id"
+            @click="restData; dialogPermissionVisible = true; permission.pid = scope.row.id"
           />
           <!-- 修改功能 -->
           <el-button
-            v-if="scope.row.level === 3"
+            v-if="scope.row.level === 3 && hasPerm('permission.update')"
             type="success"
             size="mini"
             icon="el-icon-edit"
@@ -44,7 +43,7 @@
           />
           <!-- 修改菜单 -->
           <el-button
-            v-if="scope.row.level !== 3"
+            v-if="scope.row.level !== 3 && hasPerm('permission.update')"
             type="success"
             size="mini"
             icon="el-icon-edit"
@@ -52,6 +51,7 @@
           />
           <!-- 删除 -->
           <el-button
+            v-if="hasPerm('permission.remove')"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -157,7 +157,7 @@ export default {
     getListPermission() {
       menu.getListPermission()
         .then(result => {
-          this.menuInfo = result.data.list
+          this.menuInfo = result.data.list[0].children
         })
     },
     // 删除
@@ -217,8 +217,8 @@ export default {
     restData() {
       this.dialogPermissionVisible = false
       this.dialogFormVisible = false
-      this.menu = {...menuInfo}
-      this.permission = {...permissionInfo}
+      this.menu = {type: '1', pid: 0}
+      this.permission = {type: '2', pid: 0}
     },
     appendPermission() {
       this.$refs.permission.validate(valid => {

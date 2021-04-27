@@ -38,21 +38,15 @@ router.beforeEach(async(to, from, next) => {
 
           // 取后台路由
           let accessRoutes = await store.dispatch('permission/generateRoutes')
-          // 为了防止刷新后404，在动态路由里push404页面
-          accessRoutes.push({
-            path: '*',
-            redirect: '/404',
-            hidden: true
-          })
 
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
 
-          next({...to, replace: true})
+          next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
           await store.dispatch('user/resetToken')
-          Message.error(error || 'Has Error')
+          Message.error(error || 'Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()
         }

@@ -37,19 +37,6 @@ export const constantRoutes = [
     }]
   },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://github.com/andochiwa/Online-Education-Frontend-admin',
-        meta: { title: '项目源码', icon: 'link' }
-      }
-    ]
-  },
-
-  // 404 page must be placed at the end !!!
-  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 // 动态路由

@@ -52,9 +52,9 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <router-link :to="'/course/info/' + scope.row.id">
-            <el-button type="primary" icon="el-icon-edit" circle></el-button>
+            <el-button v-if="hasPerm('course.update')" type="primary" icon="el-icon-edit" circle></el-button>
           </router-link>
-          <el-button type="danger" icon="el-icon-delete" @click="deleteCourseInfo(scope.row.id)" circle></el-button>
+          <el-button v-if="hasPerm('course.remove')" type="danger" icon="el-icon-delete" @click="deleteCourseInfo(scope.row.id)" circle></el-button>
         </template>
       </el-table-column>
     </el-table>

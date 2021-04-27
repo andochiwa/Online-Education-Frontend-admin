@@ -76,9 +76,9 @@
       <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <router-link :to="'/teacher/edit/' + scope.row.id">
-            <el-button type="primary" icon="el-icon-edit" circle></el-button>
+            <el-button v-if="hasPerm('teacher.update')" type="primary" icon="el-icon-edit" circle></el-button>
           </router-link>
-          <el-button type="danger" icon="el-icon-delete" @click="deleteTeacherById(scope.row.id)" circle></el-button>
+          <el-button v-if="hasPerm('teacher.remove')" type="danger" icon="el-icon-delete" @click="deleteTeacherById(scope.row.id)" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
