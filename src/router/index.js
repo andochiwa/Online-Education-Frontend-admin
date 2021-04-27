@@ -81,12 +81,11 @@ export const asyncRoutes = [
       }
     ]
   },
-
   {
     path: '/subject',
     component: Layout,
     name: '课程分类管理',
-    redirect: '/subject/table',
+    redirect: '/subject/list',
     meta: { title: '课程分类管理', icon: 'tree'},
     children: [
       {
@@ -108,7 +107,7 @@ export const asyncRoutes = [
     path: '/course',
     component: Layout,
     name: '课程管理',
-    redirect: '/course/table',
+    redirect: '/course/list',
     meta: { title: '课程管理', icon: 'nested'},
     children: [
       {
