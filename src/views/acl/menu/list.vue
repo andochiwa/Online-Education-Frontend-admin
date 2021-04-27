@@ -110,7 +110,7 @@ import menu from '@/api/acl/menu'
 
 const menuInfo = {
   permissionValue: '',
-  type: '2',
+  type: '1',
   name: '',
   path: '',
   component: '',

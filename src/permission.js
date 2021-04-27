@@ -5,11 +5,13 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import Layout from '@/layout'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
 const whiteList = ['/login'] // no redirect whitelist
 
+// 路由变化之前先经过这里
 router.beforeEach(async(to, from, next) => {
   // start progress bar
   NProgress.start()
@@ -32,7 +34,17 @@ router.beforeEach(async(to, from, next) => {
       } else {
         try {
           // get user info
-          await store.dispatch('user/getInfo')
+          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          await store.dispatch('GetInfo')
+
+          // 取后台路由
+          const accessRoutes = await store.dispatch('permission/generateRoutes')
+          console.log(accessRoutes)
+
+          // dynamically add accessible routes
+          // router.options.routes = accessRoutes;
+          debugger
+          router.addRoutes(esc)
 
           next()
         } catch (error) {

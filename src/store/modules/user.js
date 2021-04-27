@@ -1,5 +1,5 @@
-import { login, logout, getInfo } from '@/api/login'
-import { getToken, setToken, removeToken } from '@/utils/auth'
+import { getInfo, login, logout } from '@/api/login'
+import { getToken, removeToken, setToken } from '@/utils/auth'
 // import { resetRouter } from '@/router'
 
 // const getDefaultState = () => {
@@ -55,24 +55,26 @@ const user = {
     // 获取用户信息
     async GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          if (data.roleNames && data.roleNames.length > 0) { // 验证返回的roles是否是一个非空数组
-            commit('SET_ROLES', data.roleNames)
-          } else {
-            reject('getInfo: roles must be a non-null array !')
-          }
+        getInfo()
+          .then(response => {
+            const data = response.data
 
-          const buttonAuthList = []
-          data.permissionValues.forEach(button => {
-            buttonAuthList.push(button)
-          })
+            if (data.roleNames && data.roleNames.length > 0) { // 验证返回的roles是否是一个非空数组
+              commit('SET_ROLES', data.roleNames)
+            } else {
+              reject('getInfo: roles must be a non-null array !')
+            }
 
-          commit('SET_NAME', data.username)
-          commit('SET_AVATAR', data.avatar)
-          commit('SET_BUTTONS', buttonAuthList)
-          resolve(response)
-        }).catch(error => {
+            const buttonAuthList = []
+            data.permissionValues.forEach(button => {
+              buttonAuthList.push(button)
+            })
+
+            commit('SET_NAME', data.username)
+            commit('SET_AVATAR', data.avatar)
+            commit('SET_BUTTONS', buttonAuthList)
+            resolve(response)
+          }).catch(error => {
           reject(error)
         })
       })
@@ -80,13 +82,14 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        logout(state.token).then(() => {
-          commit('SET_TOKEN', '')// 清空前端vuex中存储的数据
-          commit('SET_ROLES', [])// 清空前端vuex中存储的数据
-          commit('SET_BUTTONS', [])
-          removeToken()// 清空cookie
-          resolve()
-        }).catch(error => {
+        logout(state.token)
+          .then(() => {
+            commit('SET_TOKEN', '')// 清空前端vuex中存储的数据
+            commit('SET_ROLES', [])// 清空前端vuex中存储的数据
+            commit('SET_BUTTONS', [])
+            removeToken()// 清空cookie
+            resolve()
+          }).catch(error => {
           reject(error)
         })
       })

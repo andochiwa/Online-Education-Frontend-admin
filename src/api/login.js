@@ -20,11 +20,10 @@ export function login(username, password) {
 // }
 
 // 获取用户信息
-export function getInfo(token) {
+export function getInfo() {
   return request({
     url: '/acl/index/info',
-    method: 'get',
-    params: { token }
+    method: 'get'
   })
 }
 
