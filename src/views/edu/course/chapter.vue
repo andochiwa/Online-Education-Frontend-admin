@@ -13,8 +13,8 @@
 
     <!--  ======章节弹框表单=========  -->
     <el-dialog title="添加章节" :visible.sync="dialogChapter">
-      <el-form :model="chapter" label-width="120px">
-        <el-form-item label="章节标题">
+      <el-form ref="chapter" :model="chapter" label-width="120px" :rules="rules">
+        <el-form-item label="章节标题" prop="title">
           <el-input v-model="chapter.title"></el-input>
         </el-form-item>
         <el-form-item label="章节排序">
@@ -29,8 +29,8 @@
 
     <!--  ======小节弹框表单=========  -->
     <el-dialog title="添加小节" :visible.sync="dialogVideo">
-      <el-form :model="video" label-width="120px">
-        <el-form-item label="小节标题">
+      <el-form ref="video" :model="video" label-width="120px" :rules="videoRules">
+        <el-form-item label="小节标题" prop="title">
           <el-input v-model="video.title"/>
         </el-form-item>
         <el-form-item label="小节排序">
@@ -163,6 +163,12 @@ export default {
         sort: 0,
         isFree: 1
       },
+      rules: {
+        title: [{required: true, trigger: 'blur', message: '章节标题必须输入'}]
+      },
+      videoRules: {
+        title: [{required: true, trigger: 'blur', message: '小节标题必须输入'}]
+      },
       dialogChapter: false,
       dialogVideo: false,
       BASE_URL: process.env.VUE_APP_BASE_API,
@@ -222,25 +228,29 @@ export default {
     /* =================对于小节的操作=========================== */
     // 小节保存或更新按钮点击后
     buttonSaveVideo() {
-      // 如果视频还在上传中
-      if (this.videoMark) {
-        this.$message({
-          type: 'error',
-          message: '视频还在上传中，请等待上传完毕'
-        })
-        return false
-      }
-      this.video.gmtCreate = null
-      this.video.gmtModified = null
-      if (this.video.id) {
-        this.updateVideo()
-      } else {
-        this.saveVideo()
-      }
-      // 置空
-      this.video.title = ''
-      this.video.sort = 1
-      this.video.isFree = 1
+      this.$refs.video.validate(data => {
+        if (data) {
+          // 如果视频还在上传中
+          if (this.videoMark) {
+            this.$message({
+              type: 'error',
+              message: '视频还在上传中，请等待上传完毕'
+            })
+            return false
+          }
+          this.video.gmtCreate = null
+          this.video.gmtModified = null
+          if (this.video.id) {
+            this.updateVideo()
+          } else {
+            this.saveVideo()
+          }
+          // 置空
+          this.video.title = ''
+          this.video.sort = 1
+          this.video.isFree = 1
+        }
+      })
     },
     // 添加小节
     saveVideo() {
@@ -338,16 +348,20 @@ export default {
     },
     // 章节保存或更新按钮点击后
     buttonSave() {
-      this.chapter.gmtCreate = null
-      this.chapter.gmtModified = null
-      if (this.chapter.id) {
-        this.updateChapter()
-      } else {
-        this.saveChapter()
-      }
-      // 清空数据
-      this.chapter.title = ''
-      this.chapter.sort = 0
+      this.$refs.chapter.validate(data => {
+        if (data) {
+          this.chapter.gmtCreate = null
+          this.chapter.gmtModified = null
+          if (this.chapter.id) {
+            this.updateChapter()
+          } else {
+            this.saveChapter()
+          }
+          // 清空数据
+          this.chapter.title = ''
+          this.chapter.sort = 0
+        }
+      })
     },
     // 修改章节按钮点击后，回显数据
     chapterOpenEdit(data) {

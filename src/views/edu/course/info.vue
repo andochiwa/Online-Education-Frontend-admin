@@ -10,12 +10,12 @@
     </el-steps>
 
     <!--  课程标题  -->
-    <el-form label-width="200px" style="width: 65%">
-      <el-form-item label="课程标题">
+    <el-form ref="info" label-width="200px" style="width: 65%" :rules="rules">
+      <el-form-item label="课程标题" prop="title">
         <el-input v-model="courseInfo.title" placeholder="请输入课程标题"/>
       </el-form-item>
 
-      <el-form-item label="课程分类">
+      <el-form-item label="课程分类" prop="subject">
         <el-cascader v-model="value"
                      :options="subjectList"
                      :props="defaultProps"
@@ -25,7 +25,7 @@
       </el-form-item>
 
       <!--  课程教师  -->
-      <el-form-item label="课程教师">
+      <el-form-item label="课程教师" prop="teacher">
         <el-select v-model="courseInfo.teacherId" placeholder="请选择课程教师">
           <el-option
             v-for="teacher in teacherList"
@@ -66,7 +66,7 @@
 
     <el-form label-width="200px">
       <el-form-item>
-        <el-button style="margin-top: 12px;" type="primary" icon="el-icon-right" :disabled="disabledSaveButton" @click="next">下一步</el-button>
+        <el-button style="margin-top: 12px;" type="primary" icon="el-icon-right" @click="next">下一步</el-button>
       </el-form-item>
     </el-form>
 
@@ -83,7 +83,11 @@ export default {
   data() {
     return {
       BASE_API: process.env.VUE_APP_BASE_API,
-      disabledSaveButton: false,
+      rules: {
+        title: [{required: true, trigger: 'blur', message: '标题必须输入'}],
+        teacher: [{required: true, trigger: 'blur', message: '教师必须选择'}],
+        subject: [{required: true, trigger: 'blur', message: '分类必须选择'}]
+      },
       courseInfo: {
         id: '',
         title: '',
@@ -119,24 +123,28 @@ export default {
   methods: {
     // 跳转到下一部
     next() {
-      // 当有id时发送update请求
-      if (this.$route.params && this.$route.params.id) {
-        course.updateCourseInfo(this.courseInfo)
-          .then(result => {
-            this.courseInfo = result.data.items
-            this.$router.push({
-              path: '/course/chapter/' + this.courseInfo.id
-            })
-          })
-      } else {
-        // 当没有id时发送save请求
-        course.saveCourseInfo(this.courseInfo)
-          .then(result => {
-            this.$router.push({
-              path: '/course/chapter/' + result.data.id
-            })
-          })
-      }
+      this.$refs.info.validate(data => {
+        if (data) {
+          // 当有id时发送update请求
+          if (this.$route.params && this.$route.params.id) {
+            course.updateCourseInfo(this.courseInfo)
+              .then(result => {
+                this.courseInfo = result.data.items
+                this.$router.push({
+                  path: '/course/chapter/' + this.courseInfo.id
+                })
+              })
+          } else {
+            // 当没有id时发送save请求
+            course.saveCourseInfo(this.courseInfo)
+              .then(result => {
+                this.$router.push({
+                  path: '/course/chapter/' + result.data.id
+                })
+              })
+          }
+        }
+      })
     },
     // 查询所有教师
     getTeacher() {

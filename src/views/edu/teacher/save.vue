@@ -3,8 +3,8 @@
     <h1>添加教师</h1>
 
     <!--    添加教师表单    -->
-    <el-form label-width="80px">
-      <el-form-item label="教师名称">
+    <el-form ref="teacher" :rules="rules" label-width="80px">
+      <el-form-item label="教师名称" prop="name">
         <el-input v-model="teacherData.name"></el-input>
       </el-form-item>
       <el-form-item label="教师排序">
@@ -32,7 +32,7 @@
           :on-success="handleAvatarSuccess"
           :before-upload="beforeAvatarUpload"
         >
-          <img v-if="imgUrl" :src="imgUrl" class="avatar" alt="">
+          <img v-if="teacherData.avatar" :src="teacherData.avatar" class="avatar" alt="">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
 
         </el-upload>
@@ -43,7 +43,9 @@
 
       <el-form-item>
         <el-button type="primary" @click="saveOrUpdate">保存</el-button>
-        <el-button>取消</el-button>
+        <router-link to="/teacher/table">
+          <el-button>取消</el-button>
+        </router-link>
       </el-form-item>
     </el-form>
   </div>
@@ -60,8 +62,10 @@ export default {
         sort: 0,
         avatar: ''
       },
+      rules: {
+        name: [{required: true, trigger: 'blur', message: '教师名称必须输入'}],
+      },
       actionUrl: process.env.VUE_APP_BASE_API + '/edu-oss/file',
-      imgUrl: ''
     }
   },
   // 监听
@@ -86,11 +90,15 @@ export default {
     },
     // 判断是保存还是添加
     saveOrUpdate() {
-      if (this.teacherData.id) {
-        this.updateTeacher()
-      } else {
-        this.saveTeacher()
-      }
+      this.$refs.teacher.validate(data => {
+        if (data) {
+          if (this.teacherData.id) {
+            this.updateTeacher()
+          } else {
+            this.saveTeacher()
+          }
+        }
+      })
     },
     // 保存教师
     saveTeacher() {
@@ -133,7 +141,6 @@ export default {
     },
     // 上传头像成功
     handleAvatarSuccess(res, file) {
-      this.imgUrl = URL.createObjectURL(file.raw)
       this.teacherData.avatar = res.data.url
     },
     // 上传头像前判断
