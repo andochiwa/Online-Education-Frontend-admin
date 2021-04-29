@@ -11,14 +11,6 @@ export function login(username, password) {
   })
 }
 
-// export function login(data) {
-//   return request({
-//     url: '/eduservice/user/login',
-//     method: 'post',
-//     data
-//   })
-// }
-
 // 获取用户信息
 export function getInfo() {
   return request({
@@ -26,14 +18,6 @@ export function getInfo() {
     method: 'get'
   })
 }
-
-// export function getInfo(token) {
-//   return request({
-//     url: '/admin/acl/index',
-//     method: 'get',
-//     params: { token }
-//   })
-// }
 
 // 登出
 export function logout() {
