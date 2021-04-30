@@ -1,14 +1,8 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" label-width="350px">
+    <el-form :inline="true" label-width="500px">
 
       <el-form-item label="查询">
-        <el-select v-model="searchObj.type" placeholder="请选择">
-          <el-option label="用户登录数统计" value="login_num"/>
-          <el-option label="用户注册数统计" value="register_num"/>
-          <el-option label="课程播放数统计" value="video_view_num"/>
-          <el-option label="每日课程数统计" value="course_num"/>
-        </el-select>
       </el-form-item>
 
       <el-form-item>
@@ -28,7 +22,6 @@
         />
       </el-form-item>
       <el-button
-        :disabled="!searchObj.type"
         type="primary"
         icon="el-icon-search"
         @click="showChart()"
@@ -50,10 +43,10 @@ export default {
   data() {
     return {
       searchObj: {
-        type: 'login_num'
       },
       xData: [],
-      yData: []
+      yData: [],
+      names: []
     }
   },
   created() {
@@ -79,10 +72,22 @@ export default {
     },
 
     showChart() {
-      stat.getStatData(this.searchObj.type, this.searchObj.begin, this.searchObj.end)
+      stat.getStatData(this.searchObj.begin, this.searchObj.end)
         .then(result => {
-          this.yData = result.data.countList
-          this.xData = result.data.dateList
+          let val = result.data
+          // this.yData = result.data.countList
+          this.xData = val.dateList
+          this.yData = []
+          this.names = val.names
+          for (let i = 0; i < val.countList.length; i++) {
+            this.yData.push({
+              name: val.names[i],
+              type: 'line',
+              // stack: '总量',
+              data: val.countList[i],
+              smooth: true,
+            })
+          }
 
           //调用下面生成图表的方法，改变值
           this.setChart()
@@ -100,20 +105,28 @@ export default {
         tooltip: {
           trigger: 'axis'
         },
+        legend: {
+          data: this.names
+        },
+        grid: {
+          left: '3%',
+          right: '4%',
+          bottom: '3%',
+          containLabel: true
+        },
         dataZoom: [{
           show: true,
           height: 30,
           xAxisIndex: [
             0
           ],
-          bottom: 30,
-          start: 10,
-          end: 80,
+          bottom: 15,
+          start: 0,
+          end: 100,
           handleIcon: 'path://M306.1,413c0,2.2-1.8,4-4,4h-59.8c-2.2,0-4-1.8-4-4V200.8c0-2.2,1.8-4,4-4h59.8c2.2,0,4,1.8,4,4V413z',
           handleSize: '110%',
           handleStyle: {
             color: '#d3dee5'
-
           },
           textStyle: {
             color: '#fff'
@@ -130,6 +143,7 @@ export default {
         // x轴是类目轴（离散数据）,必须通过data设置类目数据
         xAxis: {
           type: 'category',
+          boundaryGap: false,
           data: this.xData
         },
         // y轴是数据轴（连续数据）
@@ -137,12 +151,7 @@ export default {
           type: 'value'
         },
         // 系列列表。每个系列通过 type 决定自己的图表类型
-        series: [{
-          // 系列中的数据内容数组
-          data: this.yData,
-          // 折线图
-          type: 'line'
-        }]
+        series: this.yData
       }
 
       this.chart.setOption(option)

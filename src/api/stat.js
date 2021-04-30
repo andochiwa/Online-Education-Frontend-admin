@@ -9,9 +9,9 @@ export default {
     })
   },
   // 获取图表数据
-  getStatData(type, begin, end) {
+  getStatData(begin, end) {
     return request({
-      url: `/stat/statistics-daily/${type}/${begin}/${end}`,
+      url: `/stat/statistics-daily/${begin}/${end}`,
       method: 'get'
     })
   }
