@@ -58,7 +58,8 @@
           :on-success="handleCoverSuccess"
           accept="image/*"
           class="avatar-uploader">
-          <img :src="courseInfo.cover" width="100%" height="100%" alt=""/>
+          <img v-if="courseInfo.cover" :src="courseInfo.cover" width="100%" height="100%" alt=""/>
+          <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </el-form-item>
 
@@ -95,7 +96,7 @@ export default {
         subjectId: '',
         price: '',
         description: '',
-        cover: process.env.BASE_URL + 'img/1.jpg',
+        cover: '',
         teacherId: '',
         subjectParentId: ''
       },

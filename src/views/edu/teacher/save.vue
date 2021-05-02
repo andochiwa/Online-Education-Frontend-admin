@@ -3,7 +3,7 @@
     <h1>添加教师</h1>
 
     <!--    添加教师表单    -->
-    <el-form ref="teacher" :rules="rules" label-width="80px">
+    <el-form ref="teacher" :rules="rules" :model="teacherData" label-width="80px">
       <el-form-item label="教师名称" prop="name">
         <el-input v-model="teacherData.name"></el-input>
       </el-form-item>
@@ -33,11 +33,9 @@
           :before-upload="beforeAvatarUpload"
         >
           <img v-if="teacherData.avatar" :src="teacherData.avatar" class="avatar" alt="">
+          <img v-else-if="avatar" :src="avatar" class="avatar" alt="">
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-
         </el-upload>
-
-
       </el-form-item>
       <!--   上传头像结束   -->
 
@@ -60,10 +58,11 @@ export default {
     return {
       teacherData: {
         sort: 0,
-        avatar: ''
+        avatar: '',
       },
+      avatar: '',
       rules: {
-        name: [{required: true, trigger: 'blur', message: '教师名称必须输入'}],
+        name: [{required: true, trigger: 'blur', message: '教师名称必须输入'}]
       },
       actionUrl: process.env.VUE_APP_BASE_API + '/edu-oss/file',
     }
@@ -140,7 +139,8 @@ export default {
         })
     },
     // 上传头像成功
-    handleAvatarSuccess(res, file) {
+    handleAvatarSuccess(res) {
+      this.avatar = res.data.url
       this.teacherData.avatar = res.data.url
     },
     // 上传头像前判断
