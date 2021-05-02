@@ -116,7 +116,7 @@ export default {
         },
         dataZoom: [{
           show: true,
-          height: 30,
+          height: 25,
           xAxisIndex: [
             0
           ],
@@ -129,7 +129,7 @@ export default {
             color: '#d3dee5'
           },
           textStyle: {
-            color: '#fff'
+            color: '#1f1a1a'
           },
           borderColor: '#90979c'
         },

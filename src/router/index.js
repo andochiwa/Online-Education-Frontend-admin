@@ -145,7 +145,7 @@ export const asyncRoutes = [
         path: 'user/list',
         name: '用户管理',
         component: () => import('@/views/acl/user/list'),
-        meta: {title: '用户管理', icon: 'password'}
+        meta: {title: '用户管理', icon: 'user'}
       },
       {
         path: 'role/list',
