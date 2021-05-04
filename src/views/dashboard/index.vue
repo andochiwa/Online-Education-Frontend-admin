@@ -46,7 +46,8 @@ export default {
       },
       xData: [],
       yData: [],
-      names: []
+      names: [],
+      timer: null
     }
   },
   created() {
@@ -62,6 +63,11 @@ export default {
     }
     this.createStat(`${year}-${month}-${day}`)
   },
+  beforeDestroy() {
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
+  },
   methods: {
     // 生成统计数据
     createStat(date) {
@@ -69,7 +75,7 @@ export default {
         .then(() => {
           this.showChart()
         })
-      setInterval(() => {
+      this.timer = setInterval(() => {
         this.showChart()
       }, 5000)
     },

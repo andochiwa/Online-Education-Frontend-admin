@@ -191,9 +191,8 @@ export const asyncRoutes = [
         meta: {title: 'sentinel', icon: 'link'}
       },
       {
-        path: 'rabbitmq',
+        path: 'http://192.168.0.11:15672/',
         name: 'rabbitmq',
-        component: () => import('@/views/acl/menu/list'),
         meta: { title: 'rabbitmq',icon: 'link' }
       },
     ]
