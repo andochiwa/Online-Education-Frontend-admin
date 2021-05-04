@@ -5,7 +5,6 @@ Vue.use(Router)
 
 /* Layout */
 import Layout from '@/layout'
-import store from '@/store'
 
 /**
  * constantRoutes
@@ -165,6 +164,37 @@ export const asyncRoutes = [
         name: '菜单管理',
         component: () => import('@/views/acl/menu/list'),
         meta: { title: '菜单管理',icon: 'password' }
+      },
+    ]
+  },
+  {
+    path: '/monitor',
+    component: Layout,
+    name: '监控页面',
+    redirect: '/monitor/sentinel',
+    meta: { title: '监控页面', icon: 'eye-open'},
+    children: [
+      {
+        path: 'druid',
+        name: 'druid',
+        component: () => import('@/views/monitor/druid'),
+        meta: { title: 'druid',icon: 'eye' },
+      },
+      {
+        path: 'http://andochiwa.top:8848/nacos',
+        name: 'nacos',
+        meta: {title: 'nacos', icon: 'link'}
+      },
+      {
+        path: 'http://andochiwa.top:8080',
+        name: 'sentinel',
+        meta: {title: 'sentinel', icon: 'link'}
+      },
+      {
+        path: 'rabbitmq',
+        name: 'rabbitmq',
+        component: () => import('@/views/acl/menu/list'),
+        meta: { title: 'rabbitmq',icon: 'link' }
       },
     ]
   },

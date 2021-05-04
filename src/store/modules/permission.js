@@ -42,7 +42,8 @@ const actions = {
       const tmp = asyncRouter.data.items
       const accessedRoutes = filterAsyncRouter(tmp, asyncRoutes)
       // 为了防止刷新后404，在动态路由里push404页面
-      accessedRoutes.push({
+      accessedRoutes.push(
+        {
           path: '*',
           redirect: '/404',
           hidden: true
