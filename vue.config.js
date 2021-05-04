@@ -20,6 +20,7 @@ module.exports = {
     port: port,
     host: '0.0.0.0',
     open: true,
+    disableHostCheck: true,
     proxy: {
       [process.env.VUE_APP_BASE_API]: {
         target: `http://localhost:80`,
@@ -29,7 +30,6 @@ module.exports = {
         }
       }
     },
-    before: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that

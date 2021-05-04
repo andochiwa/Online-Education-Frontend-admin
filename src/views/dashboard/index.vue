@@ -69,6 +69,9 @@ export default {
         .then(() => {
           this.showChart()
         })
+      setInterval(() => {
+        this.showChart()
+      }, 5000)
     },
 
     showChart() {

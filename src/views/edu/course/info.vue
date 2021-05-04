@@ -10,13 +10,13 @@
     </el-steps>
 
     <!--  课程标题  -->
-    <el-form ref="info" label-width="200px" style="width: 65%" :rules="rules">
+    <el-form ref="info" :model="courseInfo" label-width="200px" style="width: 65%" :rules="rules">
       <el-form-item label="课程标题" prop="title">
         <el-input v-model="courseInfo.title" placeholder="请输入课程标题"/>
       </el-form-item>
 
-      <el-form-item label="课程分类" prop="subject">
-        <el-cascader v-model="value"
+      <el-form-item label="课程分类" prop="subjectId">
+        <el-cascader v-model="courseInfo.subjectId"
                      :options="subjectList"
                      :props="defaultProps"
                      @change="handleChange"
@@ -25,7 +25,7 @@
       </el-form-item>
 
       <!--  课程教师  -->
-      <el-form-item label="课程教师" prop="teacher">
+      <el-form-item label="课程教师" prop="teacherId">
         <el-select v-model="courseInfo.teacherId" placeholder="请选择课程教师">
           <el-option
             v-for="teacher in teacherList"
@@ -86,8 +86,8 @@ export default {
       BASE_API: process.env.VUE_APP_BASE_API,
       rules: {
         title: [{required: true, trigger: 'blur', message: '标题必须输入'}],
-        teacher: [{required: true, trigger: 'blur', message: '教师必须选择'}],
-        subject: [{required: true, trigger: 'blur', message: '分类必须选择'}]
+        teacherId: [{required: true, trigger: 'blur', message: '教师必须选择'}],
+        subjectId: [{required: true, trigger: 'blur', message: '分类必须选择'}]
       },
       courseInfo: {
         id: '',
