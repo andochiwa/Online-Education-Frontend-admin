@@ -1,4 +1,4 @@
-[日本語]https://github.com/andochiwa/Online-Education-Frontend-admin/blob/master/README_JP.md)
+[日本語](https://github.com/andochiwa/Online-Education-Frontend-admin/blob/master/README_JP.md)
 
 # [服务器端](https://github.com/andochiwa/Online-Education-Backend)
 
