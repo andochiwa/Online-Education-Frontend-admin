@@ -10,7 +10,7 @@
 
 使用[Echarts](https://echarts.apache.org/zh/index.html)做数据统计
 
-使用动态路由进行鉴权
+使用动态路由进行RBAC鉴权
 
 # 启动方式
 

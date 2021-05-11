@@ -8,7 +8,7 @@
 
 [Echarts](https://echarts.apache.org/zh/index.html)を使ってデータを統計する
 
-Dynamic Routerを利用して認証を行う
+Dynamic Routerを利用してRBAC認証を行う
 
 # 実行方法
 
