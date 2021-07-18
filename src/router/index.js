@@ -181,17 +181,17 @@ export const asyncRoutes = [
         meta: { title: 'druid',icon: 'eye' },
       },
       {
-        path: 'http://andochiwa.top:8848/nacos',
+        path: 'http://localhost:8848/nacos',
         name: 'nacos',
         meta: {title: 'nacos', icon: 'link'}
       },
       {
-        path: 'http://andochiwa.top:8080',
+        path: 'http://localhost:8858',
         name: 'sentinel',
         meta: {title: 'sentinel', icon: 'link'}
       },
       {
-        path: 'http://192.168.0.11:15672/',
+        path: 'http://localhost:15672/',
         name: 'rabbitmq',
         meta: { title: 'rabbitmq',icon: 'link' }
       },
